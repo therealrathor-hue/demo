@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   } else {
     socketURL = "http://13.233.131.208:3006"; // "https://zxf9lvwg-3006.inc1.devtunnels.ms";  // Live
   }
+  
   console.log({hostname})
   console.log({socketURL})
   const socket = io(socketURL, {
