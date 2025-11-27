@@ -41,7 +41,7 @@ hbs.registerHelper("yesNo", function(value) {
   return value ? "Yes" : "No";
 });
 
-mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/notify-demo").then(()=>console.log("Mongo connected"));
+mongoose.connect("mongodb+srv://ketanr:31sCkoRxGZ18BiiD@cluster0.zwfkbcy.mongodb.net/notify?retryWrites=true&w=majority&appName=Cluster0" || "mongodb://127.0.0.1:27017/notify-demo").then(()=>console.log("Mongo connected"));
 
 /* --- Middleware to protect routes --- */
 function authMiddleware(req, res, next) {
