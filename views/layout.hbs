@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Notify Demo</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  {{{body}}}
+
+  <!-- socket.io client must load first -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js" integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+  import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-messaging.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBSwc_DJylEMgml9oYYCMt4CeSw95RHH9c",
+    authDomain: "test-69fbd.firebaseapp.com",
+    projectId: "test-69fbd",
+    storageBucket: "test-69fbd.firebasestorage.app",
+    messagingSenderId: "309074637934",
+    appId: "1:309074637934:web:5b8448ba019e0cba8a227f",
+    measurementId: "G-P67RHEKWG5"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const messaging = getMessaging(app);
+
+  let username = "";
+  const el = document.getElementById("pageUsername");
+  if (el) username = el.value;
+
+  if (!username) {
+    const u = new URL(window.location.href).searchParams.get("user");
+    if (u) username = u;
+  }
+
+  try {
+    // Request notification permission
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") throw new Error("Notification permission not granted");
+
+    // Get FCM token (use VAPID KEY)
+    const token = await getToken(messaging, {
+      vapidKey: "BCJMSrOwFdiv04GF_oAlnSEcdLRS-ZZGlxxuHWih9UUOEC5VmD3wnoMOS3afusgujc5furzFxUO43quGylMcK7Y"
+    });
+
+    console.log({ token, username });
+
+    if (token && username) {
+      await fetch("/save-fcm-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token })
+      });
+
+      // if (socket) socket.emit("save-fcm-token", { username, token });
+    }
+
+    // Receive foreground messages
+    onMessage(messaging, (payload) => {
+      alert(`Push: ${payload.notification.title} - ${payload.notification.body}`);
+    });
+
+  } catch (e) {
+    console.warn("FCM permission/token failed:", e);
+  }
+</script>
+
+<script>
+    const profileMenu = document.querySelector(".profile-container");
+    const dropdown = document.querySelector(".profile-dropdown");
+
+    profileMenu.addEventListener("click", () => {
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (!profileMenu.contains(e.target)) {
+        dropdown.style.display = "none";
+      }
+    });
+  </script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/12.3.0/firebase-ai.min.js" integrity="sha512-hXmtLCXLCq4CywmLqD96/wa/IjfNF9XmgfN6/bBu9ZPKD5XIKA7TUlv0N0GGvH3kk+EYix7jvqNI1UF+Cy3/yw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/12.3.0/firebase-analytics.min.js" integrity="sha512-LSPX1+TwxW4bpE01GLt3SkITb8RuBrnPy0f7+XpJHkvSl/qI1/lTQG2la2CoO+DE42jhlYsmFU8OTmQYAqGahQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  -->
+  <script src="/js/client.js"></script>
+</body>
+</html>

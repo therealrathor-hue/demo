@@ -1,0 +1,43 @@
+<div class="topbar">
+  <div>Logged in as <strong>{{user}}</strong></div>
+  <form action="/logout" method="post"><button>Logout</button></form>
+</div>
+
+<div class="container">
+  <div class="card send">
+    <h3>Send Notification</h3>
+    <input id="sendToUser" placeholder="Receiver username" />
+    <textarea id="message" placeholder="Message"></textarea>
+    <button id="sendBtn">Send</button>
+    <small>Socket and Push (if FCM token available)</small>
+  </div>
+
+  <div class="card history">
+    <h3>Notification History</h3>
+    <table>
+      <thead><tr><th>Time</th><th>From</th><th>To</th><th>Message</th><th>Socket</th><th>Push</th></tr></thead>
+      <tbody>
+        {{#each notifications}}
+          <tr>
+            <td>{{this.createdAt}}</td>
+            <td>{{this.from}}</td>
+            <td>{{this.to}}</td>
+            <td>{{this.message}}</td>
+            <td>{{this.deliveredViaSocket}}</td>
+            <td>{{this.deliveredViaPush}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // pass username to client.js via DOM element
+  const pageUser = "{{user}}";
+  const usernameEl = document.createElement("input");
+  usernameEl.type = "hidden";
+  usernameEl.id = "pageUsername";
+  usernameEl.value = pageUser;
+  document.body.appendChild(usernameEl);
+</script>
