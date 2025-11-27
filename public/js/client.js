@@ -12,7 +12,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (u) username = u;
   }
 
-  const socket = io("https://zxf9lvwg-3006.inc1.devtunnels.ms", {
+  let socketURL = "";
+
+  const hostname = window.location.hostname;
+
+  if (hostname === "localhost" || hostname === "127.0.0.1") {
+    socketURL = "http://localhost:3006";   // Local
+  } else {
+    socketURL = "http://13.233.131.208:3006"; // "https://zxf9lvwg-3006.inc1.devtunnels.ms";  // Live
+  }
+  console.log({hostname})
+  console.log({socketURL})
+  const socket = io(socketURL, {
     transports: ["websocket", "polling"],
     path: "/socket.io/",
     withCredentials: false,
