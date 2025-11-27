@@ -74,16 +74,18 @@
 <script>
     const profileMenu = document.querySelector(".profile-container");
     const dropdown = document.querySelector(".profile-dropdown");
+    console.log(dropdown, profileMenu)
+    if(profileMenu && dropdown) {
+      profileMenu.addEventListener("click", () => {
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+      });
 
-    profileMenu.addEventListener("click", () => {
-      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-    });
-
-    window.addEventListener("click", (e) => {
-      if (!profileMenu.contains(e.target)) {
-        dropdown.style.display = "none";
-      }
-    });
+      window.addEventListener("click", (e) => {
+        if (!profileMenu.contains(e.target)) {
+          dropdown.style.display = "none";
+        }
+      });
+    }
   </script>
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/12.3.0/firebase-ai.min.js" integrity="sha512-hXmtLCXLCq4CywmLqD96/wa/IjfNF9XmgfN6/bBu9ZPKD5XIKA7TUlv0N0GGvH3kk+EYix7jvqNI1UF+Cy3/yw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/12.3.0/firebase-analytics.min.js" integrity="sha512-LSPX1+TwxW4bpE01GLt3SkITb8RuBrnPy0f7+XpJHkvSl/qI1/lTQG2la2CoO+DE42jhlYsmFU8OTmQYAqGahQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
