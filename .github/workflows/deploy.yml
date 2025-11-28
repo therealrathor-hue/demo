@@ -76,7 +76,9 @@ jobs:
             cd ${{ secrets.EC2_PATH }}
             git pull
             docker-compose down
-            docker-compose up -d --build
+            docker-compose build --no-cache
+            docker-compose up -d
             docker image prune -f
+            docker ps -a
             sleep 2
             curl http://13.233.131.208:3006/trigger-deploy-refresh
