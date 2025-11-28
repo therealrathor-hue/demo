@@ -34,3 +34,9 @@ jobs:
             git pull
             npm install
             pm2 restart demo-app
+            sleep 3
+            until curl -s http://127.0.0.1:3006 > /dev/null; do
+              echo "Waiting for server restart..."
+              sleep 1
+            done
+            curl http://127.0.0.1:3006/trigger-deploy-refresh

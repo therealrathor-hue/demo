@@ -149,6 +149,12 @@ io.on("connection", (socket) => {
     });
 });
 
+app.get("/trigger-deploy-refresh", (req, res) => {
+    console.log("Deploy refresh request received");
+    io.emit("deploy-refresh");
+    res.status(200).send("Refresh event emitted");
+});
+
 
 const admin = require("firebase-admin");
 // const serviceAccount = require("./service-account.json");

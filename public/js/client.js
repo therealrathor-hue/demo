@@ -45,6 +45,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     socket.on("connect_error", (err) => {
       console.error("Socket connect error:", err.message);
     });
+
+    socket.on("deploy-refresh", () => {
+      console.log("New deployment detected — refreshing...");
+      window.location.reload();
+    });
   }
 
   // const firebaseConfig = {
