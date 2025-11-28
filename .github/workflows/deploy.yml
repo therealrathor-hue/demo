@@ -85,4 +85,4 @@ jobs:
               echo "Waiting for server restart..."
               sleep 1
             done
-            docker exec demo-node-app sh curl http://localhost:3006/trigger-deploy-refresh
+            curl http://localhost:3006/trigger-deploy-refresh
