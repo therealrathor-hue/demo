@@ -81,9 +81,5 @@ jobs:
             docker image prune -f
             docker ps -a
             sleep 5
-            until curl -s http://localhost:3006 > /dev/null; do
-              echo "Waiting for server restart..."
-              sleep 1
-            done
             docker exec demo-node-app wget -qO- http://localhost:3006/trigger-deploy-refresh
 
