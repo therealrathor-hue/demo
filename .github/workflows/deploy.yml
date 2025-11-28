@@ -80,5 +80,9 @@ jobs:
             docker-compose up -d
             docker image prune -f
             docker ps -a
-            sleep 2
+            sleep 5
+            until curl -s http://13.233.131.208:3006 > /dev/null; do
+              echo "Waiting for server restart..."
+              sleep 1
+            done
             curl http://13.233.131.208:3006/trigger-deploy-refresh
