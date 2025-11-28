@@ -6,7 +6,7 @@ COPY ./package*.json /user/app
 
 RUN npm install --production
 
-COPY ./ /usr/app/
+COPY ..
 
 EXPOSE 3006
 
