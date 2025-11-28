@@ -102,9 +102,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     socket.on("deploy-refresh", () => {
+      window.location.reload();
       alert("New update available. Refreshing!");
       console.log("New deployment detected — refreshing...");
-      window.location.reload();
     });
   }
 
