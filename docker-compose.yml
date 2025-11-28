@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: demo-node-app
+    build: .
+    ports:
+      - "3006:3006"
+    restart: always

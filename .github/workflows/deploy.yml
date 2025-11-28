@@ -1,4 +1,47 @@
-name: CI/CD Deploy Node.js App
+# name: CI/CD Deploy Node.js App
+# 
+# on:
+#   push:
+#     branches: ["main"]
+# 
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+# 
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+# 
+#       - name: Setup Node
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: "18"
+# 
+#       - name: Install Dependencies
+#         run: npm install
+# 
+#       - name: Run Tests
+#         run: npm test || true
+# 
+#       - name: SSH Deploy to EC2
+#         uses: appleboy/ssh-action@v1.0.3
+#         with:
+#           host: ${{ secrets.EC2_HOST }}
+#           username: ${{ secrets.EC2_USER }}
+#           key: ${{ secrets.EC2_KEY }}
+#           script: |
+#             cd ${{ secrets.EC2_PATH }}
+#             git pull
+#             npm install
+#             pm2 restart demo-app
+#             sleep 3
+#             until curl -s http://13.233.131.208:3006/ > /dev/null; do
+#               echo "Waiting for server restart..."
+#               sleep 1
+#             done
+#             curl http://13.233.131.208:3006/trigger-deploy-refresh
+
+name: CI/CD Deploy Node.js App (Docker)
 
 on:
   push:
@@ -23,7 +66,7 @@ jobs:
       - name: Run Tests
         run: npm test || true
 
-      - name: SSH Deploy to EC2
+      - name: SSH Deploy to EC2 (Docker Deploy)
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -32,12 +75,8 @@ jobs:
           script: |
             cd ${{ secrets.EC2_PATH }}
             git pull
-            npm install
-            pm2 restart demo-app
-            sleep 3
-            until curl -s http://13.233.131.208:3006/ > /dev/null; do
-              echo "Waiting for server restart..."
-              sleep 1
-            done
+            docker-compose down
+            docker-compose up -d --build
+            docker image prune -f
+            sleep 2
             curl http://13.233.131.208:3006/trigger-deploy-refresh
-            
